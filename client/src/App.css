@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+  cursor: pointer;
+}
+span {
+  color: #008cff;
+}
+
+.alpha-build {
+  background-color: transparent;
+  color: #0bcfbd;
+  border: 0.02rem solid #0bcfbd;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  font-size: 2rem;
+}
+
+#signInDiv {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fffefe;
+  z-index: 10;
+}
+#signInDiv::before {
+  content: "BLOCKGPT α V2.0";
+  font-family: "Merriweather Sans", sans-serif;
+  font-weight: bold;
+  font-size: 10rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #008cff, #0bcfbd);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+#signInDiv::after {
+  content: "Powered By OpenAI, Langchain and MongoDB";
+  position: absolute;
+  bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-family: "Merriweather Sans", sans-serif;
+}
+#signInDiv[hidden] {
+  display: none;
+}
+
+/* Whole Content Container */
+.blockgpt__main-container {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  position: relative;
+}
+
+/************** Side Menu Container *******************/
+.side-menu {
+  width: 45rem;
+}
+.side-menu .new-chat {
+  padding: 1.5rem;
+  width: 50%;
+  margin: 2rem;
+  background-color: transparent;
+  border: 0.2rem solid #008cff;
+  color: black;
+  font-size: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  border-radius: 4rem;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.side-menu .new-chat:hover{
+  background-color: #008cff;
+  color:white;
+}
+
+.return-sessiontext {
+  font-size: 5rem;
+  text-align: center;
+  font-family: "Merriweather Sans", sans-serif;
+}
+
+.return-sessiontext span {
+  color: #008cff;
+  font-weight: bold;
+}
+.session-button {
+  cursor: pointer;
+  padding: 1.2rem;
+  margin: 1rem 1rem 1rem 1rem;
+  font-size: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  border: none;
+  width: 70%;
+  border-radius: 4rem;
+  background-color: transparent;
+  color: #060a21;
+  border: 0.05rem solid #008cff;
+}
+
+.session-button.selected {
+  background-color: #0bcfbd;
+  color: white;
+  border: none;
+  outline: none;
+}
+
+.recent-session {
+  padding-left: 2rem;
+}
+
+.delete-button {
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.6rem;
+  width: 6rem;
+  height: 6rem;
+  transform: translate(-2rem, 0.7rem);
+  cursor: pointer;
+  background-color: transparent;
+}
+.signout {
+  position: absolute;
+  bottom: 3rem;
+  width: 33rem;
+  height: 5rem;
+  background-color: transparent;
+  border: 0.2rem solid #fe002e;;
+  border-radius: 4rem;
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 2rem;
+  margin: 1.5rem;
+  color: black;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.signout:hover{
+  background-color: #fe002e;
+  color: white;
+}
+
+
+/************** Account Details with Instruction window *******************/
+.account-details__navigation {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  position: relative;
+}
+.bot__title {
+  position: absolute;
+  left: 0;
+  padding: 0.5rem 0 0 2rem;
+  font-size: 3rem;
+  font-family: "Merriweather Sans", sans-serif;
+  font-weight: bold;
+}
+.account-details__navigation img {
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  border: 0.05rem solid #008cff;
+}
+.account-details__navigation h3 {
+  margin-top: 1.3rem;
+  padding-left: 1rem;
+  color: black;
+}
+.instruction-button {
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: inherit;
+  border: none;
+  outline: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 50%;
+  transform: translate(-2rem, 0.3rem);
+}
+.instruction-button:hover {
+  background-color: rgb(227, 227, 227);
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 8rem;
+  background-color: rgb(43, 43, 43);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  font-size: 1rem;
+  top: 4rem;
+  left: 10%;
+  font-family: "Merriweather Sans", sans-serif;
+}
+.tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%; /* At the top of the tooltip */
+  left: 25%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+.instruction-button:hover .tooltiptext {
+  visibility: visible;
+}
+
+.content {
+  padding: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+}
+.content h1 {
+  font-size: 3rem;
+  font-style: italic;
+}
+.content p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.content li {
+  font-size: 1.5rem;
+  list-style-type: decimal;
+  margin-left: 1rem;
+  text-align: justify;
+  margin-bottom: 1rem;
+}
+
+.close-instruction {
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(
+    124deg,
+    rgba(0, 157, 255, 1) 0%,
+    rgba(0, 33, 255, 1) 100%
+  );
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+.privacy-container {
+  padding: 1.5rem;
+}
+.privacy-content__heading {
+  font-size: 3rem;
+  font-family: "Merriweather Sans", sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+.info-privacy {
+  font-size: 2rem;
+  font-family: "Merriweather Sans", sans-serif;
+  font-weight: bold;
+  color: #008cff;
+}
+.privacy-container ul li {
+  list-style-type: decimal;
+  font-size: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  text-align: justify;
+  line-height: 2.5rem;
+}
+.privacy-container p {
+  font-size: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  text-align: justify;
+}
+/************** BlOCK GPT Container *******************/
+.blockgpt__chat-container {
+  position: absolute;
+  top: 54%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 110rem;
+  height: 87vh;
+  border-radius: 3rem;
+  background-color: #f3f7fd;
+}
+
+/************** Chat history display *******************/
+.chat-history {
+  height: 75vh;
+  padding: 1.3rem;
+  overflow-y: scroll;
+}
+.assistant-responsebox {
+  display: flex;
+  margin: 1rem;
+}
+.assistant-responsebox img,
+.assistant-response img {
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+}
+.assistant-responsebox p {
+  padding: 1.5rem;
+  font-size: 1.3rem;
+  font-family: "Merriweather Sans", sans-serif;
+
+  background-color: white;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-radius: 4rem;
+  text-align: justify;
+}
+
+.assistant-response {
+  padding: 1.5rem;
+  margin-left: 1rem;
+  font-size: 1.3rem;
+  font-family: "Merriweather Sans", sans-serif;
+  background-color: #d3ebff;
+  margin-top: 1rem;
+  text-align: justify;
+  border-radius: 4rem;
+}
+
+.user-responsebox {
+  display: flex;
+  margin: 1rem;
+}
+.user-responsebox img {
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+}
+.user-responsebox p {
+  padding: 1.5rem;
+  font-size: 1.3rem;
+  font-family: "Merriweather Sans", sans-serif;
+}
+
+.user-message_1 {
+  position: absolute;
+  top: 20%;
+  padding: 1.5rem;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+}
+.user-message_1 span img {
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+}
+
+/* Chat box Input Container */
+.chatbox-form input {
+  width: 60%;
+  padding: 2rem;
+  font-size: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  border-radius: 4rem;
+  border: 0.05rem solid #060a21;
+  position: absolute;
+  bottom: 3.5rem;
+  right: 20rem;
+  background-color: white;
+  color: #060a21;
+}
+
+.chatbox-form .submit {
+  cursor: pointer;
+  position: absolute;
+  bottom: 4rem;
+  right: 13.5rem;
+  width: 5rem;
+  height: 5rem;
+  padding: 1.5rem;
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  background-color: #008cff;
+}
+
+.chat-history::-webkit-scrollbar {
+  width: 1rem;
+}
+.chat-history::-webkit-scrollbar-track {
+  background-color: #f3f7fd;
+}
+.chat-history::-webkit-scrollbar-thumb {
+  background-color: #008cff;
+}
