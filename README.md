@@ -34,8 +34,10 @@ python Langchain_V1.py
  - [Langchain Docs](https://python.langchain.com/docs/get_started/introduction)
 ## Tech Stack
 
-**FrontEnd:** ReactJS, CSS3
+**FrontEnd:** ReactJS, CSS3 
+
 **BackEnd:** MongoDB, Express, Node
+
 **Scripts:** LangChain, Flask, OPENAI
 
 
