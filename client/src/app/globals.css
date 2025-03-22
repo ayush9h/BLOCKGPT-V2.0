@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 @import "tailwindcss";
 
@@ -9,5 +9,7 @@
 }
 
 @theme {
-  --font-display: "Anta", sans-serif;
+  --font-header: "Fjalla One", sans-serif;
+  --font-paragraph: "Libre Baskerville", serif;
+  --paragraph-text: #24292F
 }
