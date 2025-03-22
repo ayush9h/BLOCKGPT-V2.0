@@ -3,11 +3,6 @@
 @import "tailwindcss";
 
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme {
   --font-header: "Fjalla One", sans-serif;
   --font-paragraph: "Libre Baskerville", serif;
