@@ -16,9 +16,10 @@ export default function Landing() {
                     </button>
       
                 
-                    <button className="text-slate-800 px-5 py-2.5 gap-2 font-medium flex flex-row justify-center items-center text-center bg-slate-200 rounded-md border border-slate-300 hover:bg-slate-300 duration-150 ease-in-out cursor-pointer">
-                    <img className="w-5 h-5" src="https://www.svgrepo.com/show/512317/github-142.svg" loading="lazy" alt="github logo"></img>
-                    Sign in with Github
+                    <button className="text-slate-800 px-5 py-2.5 gap-2 font-medium flex flex-row justify-center items-center text-center bg-slate-200 rounded-md border border-slate-300 hover:bg-slate-300 duration-150 ease-in-out cursor-pointer"
+                    onClick={()=>signIn("github",{redirectTo:"/chat"})}>
+                        <img className="w-5 h-5" src="https://www.svgrepo.com/show/512317/github-142.svg" loading="lazy" alt="github logo"></img>
+                        Sign in with Github
                     </button>
           
             </div>

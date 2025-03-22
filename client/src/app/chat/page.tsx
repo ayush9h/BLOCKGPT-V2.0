@@ -1,19 +1,17 @@
-"use client"
-import { useSession } from "next-auth/react"
-import { signOut } from "next-auth/react"
+import Navbar from "../components/navbar";
+
 
 
 export default function Chat(){
-    const { data: session } = useSession()
 
-    if (!session?.user) return null
 
     return (
         <>
-        <div>
-            <h1>{session.user.email}</h1>
-            <button onClick={() => signOut({redirectTo:'/'})} className="hover:bg-red-700 p-2">Sign Out</button>
+        <div className="grid grid-cols-5">
+            <div className="col-span-1 min-h-screen bg-red-500"></div>
+            <div className="cols-span-4"><Navbar/></div>
         </div>
+
        
         
         </>
