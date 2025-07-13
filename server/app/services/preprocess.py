@@ -47,7 +47,3 @@ def preprocess_and_store():
     vector_store.save_local("./app/vector_store/faiss_index")
 
     logger.info("Preprocessing Complete")
-
-
-if __name__ == "__main__":
-    preprocess_and_store()

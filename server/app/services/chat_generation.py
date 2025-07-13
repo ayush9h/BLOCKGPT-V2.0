@@ -3,6 +3,7 @@ from typing import Any, Dict
 from app.data.prompts import SYSTEM_MESSAGE
 from app.schemas.abstract_class import APIStrategy
 from app.schemas.chats import UserChatSchema
+from app.services.preprocess import preprocess_and_store
 from app.services.vectorstore import retrieve_context
 from app.utils.logger import logger
 from app.utils.models import LLMModel
@@ -33,6 +34,8 @@ class ChatModule(APIStrategy):
         llm = self.MODEL_MAP[self.payload.model]
         logger.info(f"{self.payload.model} inferencing successful")
 
+        # preprocess_and_store()
+
         retrieved_data = retrieve_context(self.payload.question)
         logger.info("Context Retrieved for the question")
 
@@ -57,6 +60,8 @@ class ChatModule(APIStrategy):
 
     def execute(self, payload: Dict[str, Any]):
 
+        self.on_start()
+
         self.payload = self.validate_payload(payload)
         if (
             isinstance(self.payload, dict)
@@ -66,6 +71,8 @@ class ChatModule(APIStrategy):
         logger.info("Payload Validated")
 
         response = self.response_generator()
+
+        self.on_finish()
 
         return self.make_resp(
             response=response,

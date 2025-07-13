@@ -5,13 +5,15 @@ from typing import Any, Literal, Optional
 
 class APIStrategy(ABC):
     def on_start(self):
-        return time.time()
+        self.start_time = time.time()
+        return self.start_time
 
     def on_finish(self):
-        return time.time()
+        self.end_time = time.time()
+        return self.end_time
 
     def get_execution_time(self):
-        return self.on_finish() - self.on_start()
+        return self.end_time - self.start_time
 
     def make_resp(
         self,
