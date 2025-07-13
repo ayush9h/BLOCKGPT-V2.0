@@ -24,10 +24,13 @@ class ChatModule(APIStrategy):
         validated_payload = self.validate_payload(payload)
         logger.info("Paylod Validated")
 
-        
+        MODEL_MAP = {
+            "llama3-8b-8192": LLMModel.llama_model(),
+            "qwen/qwen3-32b": LLMModel.qwen_model(),
+            "gemma2-9b-it": LLMModel.gemma_model(),
+        }
 
-
-        llm = LLMModel.llama_model()
+        llm = MODEL_MAP[validated_payload.model]
         logger.info("LLM Model inferenced")
 
         retrieved_data = retrieve_context(validated_payload.question)
