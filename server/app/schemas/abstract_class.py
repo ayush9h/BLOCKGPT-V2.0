@@ -1,14 +1,24 @@
-from abc import abstractmethod
+import time
+from abc import ABC, abstractmethod
 
 
-class ApiStrategy:    
-    @staticmethod
-    def make_resp(body, execution_status, status_code, message):
+class APIStrategy(ABC):
+    def on_start(self):
+        return time.time()
+
+    def on_finish(self):
+        return time.time()
+
+    def get_execution_time(self):
+        return self.on_finish() - self.on_start()
+
+    def make_resp(self, response, execution_status, status_code, message):
         return {
-            "body": body,
+            "service_output": response,
             "execution_status": execution_status,
             "status_code": status_code,
-            "message":message
+            "message": message,
+            "execution_time": f"{self.get_execution_time()}s",
         }
 
     @abstractmethod
