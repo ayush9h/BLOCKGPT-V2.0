@@ -1,5 +1,6 @@
 import time
 from abc import ABC, abstractmethod
+from typing import Any, Literal
 
 
 class APIStrategy(ABC):
@@ -12,7 +13,13 @@ class APIStrategy(ABC):
     def get_execution_time(self):
         return self.on_finish() - self.on_start()
 
-    def make_resp(self, response, execution_status, status_code, message):
+    def make_resp(
+        self,
+        response: Any,
+        execution_status: Literal["success", "failed"],
+        status_code: int,
+        message: str,
+    ):
         return {
             "service_output": response,
             "execution_status": execution_status,

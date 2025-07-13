@@ -1,8 +1,9 @@
 import os
 
+from app.config.environment import Config
 from langchain_groq import ChatGroq
 
-config_key = os.getenv("GROQ_API_KEY")
+config_key = Config.GROQ_API_KEY
 
 class LLMModel:
     def llama_model():
