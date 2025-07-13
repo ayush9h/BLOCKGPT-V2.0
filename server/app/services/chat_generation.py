@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from app.data.prompts import SYSTEM_MESSAGE
 from app.schemas.abstract_class import APIStrategy
 from app.schemas.chats import UserChatSchema
@@ -27,20 +29,11 @@ class ChatModule(APIStrategy):
                 message=f"Data validation failed due to {e}",
             )
 
-    def execute(self, payload: UserChatSchema):
+    def response_generator(self) -> str:
+        llm = self.MODEL_MAP[self.payload.model]
+        logger.info(f"{self.payload.model} inferencing successful")
 
-        validated_payload = self.validate_payload(payload)
-        if (
-            isinstance(validated_payload, dict)
-            and validated_payload.get("execution_status") == "failed"
-        ):
-            return validated_payload
-        logger.info("Payload Validated")
-
-        llm = self.MODEL_MAP[validated_payload.model]
-        logger.info(f"{validated_payload.model} inferencing successful")
-
-        retrieved_data = retrieve_context(validated_payload.question)
+        retrieved_data = retrieve_context(self.payload.question)
         logger.info("Context Retrieved for the question")
 
         messages = [
@@ -50,7 +43,7 @@ class ChatModule(APIStrategy):
             ),
             (
                 "developer",
-                f"{validated_payload.question}\n\nContext:\n{retrieved_data['context']}",
+                f"{self.payload.question}\n\nContext:\n{retrieved_data['context']}",
             ),
         ]
 
@@ -59,6 +52,20 @@ class ChatModule(APIStrategy):
 
         response = ai_msg.content
         logger.info("Response generated for the question")
+
+        return response
+
+    def execute(self, payload: Dict[str, Any]):
+
+        self.payload = self.validate_payload(payload)
+        if (
+            isinstance(self.payload, dict)
+            and self.payload.get("execution_status") == "failed"
+        ):
+            return self.payload
+        logger.info("Payload Validated")
+
+        response = self.response_generator()
 
         return self.make_resp(
             response=response,
