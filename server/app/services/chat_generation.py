@@ -1,3 +1,4 @@
+from app.data.prompts import SYSTEM_MESSAGE
 from app.schemas.abstract_class import APIStrategy
 from app.schemas.chats import UserChatSchema
 from app.services.vectorstore import retrieve_context
@@ -7,6 +8,13 @@ from pydantic import ValidationError
 
 
 class ChatModule(APIStrategy):
+
+    def __init__(self):
+        self.MODEL_MAP = {
+            "llama3-8b-8192": LLMModel.llama_model(),
+            "qwen/qwen3-32b": LLMModel.qwen_model(),
+            "gemma2-9b-it": LLMModel.gemma_model(),
+        }
 
     def validate_payload(self, payload:UserChatSchema):
         try:
@@ -24,14 +32,8 @@ class ChatModule(APIStrategy):
         validated_payload = self.validate_payload(payload)
         logger.info("Paylod Validated")
 
-        MODEL_MAP = {
-            "llama3-8b-8192": LLMModel.llama_model(),
-            "qwen/qwen3-32b": LLMModel.qwen_model(),
-            "gemma2-9b-it": LLMModel.gemma_model(),
-        }
-
-        llm = MODEL_MAP[validated_payload.model]
-        logger.info("LLM Model inferenced")
+        llm = self.MODEL_MAP[validated_payload.model]
+        logger.info(f"{validated_payload.model} inferencing successful")
 
         retrieved_data = retrieve_context(validated_payload.question)
         logger.info("Context Retrieved for the question")
@@ -39,11 +41,11 @@ class ChatModule(APIStrategy):
         messages = [
             (
                 "system",
-                "You are helpful assistant which tell answers to questions about cryptocurrency from the context which has been retrieved only. No answers from outside of this context.",
+                SYSTEM_MESSAGE,
             ),
             (
-                "developer", 
-                f"{validated_payload.question}\n\nContext:\n{retrieved_data['context']}"
+                "developer",
+                f"{validated_payload.question}\n\nContext:\n{retrieved_data['context']}",
             ),
         ]
 
