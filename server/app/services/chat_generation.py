@@ -4,7 +4,6 @@ from app.schemas.chats import UserChatSchema
 from app.services.vectorstore import retrieve_context
 from app.utils.logger import logger
 from app.utils.models import LLMModel
-from pydantic import ValidationError
 
 
 class ChatModule(APIStrategy):
@@ -20,17 +19,23 @@ class ChatModule(APIStrategy):
         try:
             payload = UserChatSchema(**payload)
             return payload
-        except ValidationError as e:
+        except ValueError as e:
             return self.make_resp(
-                response=e,
+                response=str(e),
                 execution_status="failed",
                 status_code=400,
                 message=f"Data validation failed due to {e}",
             )
 
     def execute(self, payload: UserChatSchema):
+
         validated_payload = self.validate_payload(payload)
-        logger.info("Paylod Validated")
+        if (
+            isinstance(validated_payload, dict)
+            and validated_payload.get("execution_status") == "failed"
+        ):
+            return validated_payload
+        logger.info("Payload Validated")
 
         llm = self.MODEL_MAP[validated_payload.model]
         logger.info(f"{validated_payload.model} inferencing successful")

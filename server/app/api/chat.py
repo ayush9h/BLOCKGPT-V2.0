@@ -1,15 +1,28 @@
 from app.services.chat_generation import ChatModule
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 
 chat_bp = Blueprint("chat_bp", __name__)
 
 
 @chat_bp.post("/chat")
-def start_chat():
+def default_chat():
 
     payload = request.get_json()
-    service = ChatModule()
+    try:
+        service = ChatModule()
 
-    response = service.execute(payload)
+        response = service.execute(payload)
 
-    return response
+        return jsonify(response), 200
+    except Exception as e:
+        return (
+            jsonify(
+                service.make_resp(
+                    response=e,
+                    execution_status="failed",
+                    status_code=500,
+                    message="Internal Server Request Error",
+                )
+            ),
+            500,
+        )
