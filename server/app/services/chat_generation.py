@@ -14,9 +14,10 @@ class ChatModule(APIStrategy):
             return payload
         except ValidationError as e:
             return self.make_resp(
-                execution_status="failure",
+                response=e,
+                execution_status="failed",
                 status_code=400,
-                body=f"Data validation failed due to {e}"
+                message=f"Data validation failed due to {e}",
             )
 
     def execute(self, payload: UserChatSchema):

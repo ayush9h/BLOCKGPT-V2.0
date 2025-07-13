@@ -1,6 +1,6 @@
 import time
 from abc import ABC, abstractmethod
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
 
 class APIStrategy(ABC):
@@ -15,7 +15,7 @@ class APIStrategy(ABC):
 
     def make_resp(
         self,
-        response: Any,
+        response: Optional[Any],
         execution_status: Literal["success", "failed"],
         status_code: int,
         message: str,
