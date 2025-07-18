@@ -14,7 +14,7 @@ export default function Navbar() {
   if (!session?.user) return null
 
   return (
-    <nav className="w-full bg-white shadow-sm shadow-black/15">
+    <nav className="w-full bg-white">
       <div className="mx-auto flex max-w-screen-xl items-center justify-between p-4">
         <div className="font-paragraph text-lg font-semibold">
           Placeholder for model selection
