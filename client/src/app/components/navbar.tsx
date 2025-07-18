@@ -1,47 +1,56 @@
-"use client"
-import { useSession } from "next-auth/react"
-import { signOut } from "next-auth/react"
-import { useState } from "react"
+'use client'
+
+import { useSession, signOut } from 'next-auth/react'
+import { useState } from 'react'
 
 export default function Navbar() {
-    const { data: session } = useSession()
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const { data: session } = useSession()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen)
-    }
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
 
-    console.log(session?.user?.image)
-    if (!session?.user) return null
+  if (!session?.user) return null
 
-    return (
-        <nav className="bg-white shadow-sm shadow-black/15 w-full">
-            <div className="max-w-screen-xl mx-auto flex items-center justify-between p-4">
-                <div className="text-lg font-semibold font-paragraph">Placeholder for model selection</div>
-                <div>
-                    <img
-                        src={session?.user?.image as string}
-                        alt="User Image"
-                        className="relative h-10 w-10 rounded-full bg-slate-200 hover:bg-slate-300 duration-150 ease-in-out p-1 cursor-pointer"
-                        onClick={toggleDropdown}
-                    />
-                    {isDropdownOpen && (
-                        <div 
-                            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-                        >
-                            <div className="py-1">
-                                <h1 className="text-sm font-semibold font-paragraph">{session.user.email}</h1>
-                                <button
-                                    onClick={() => signOut({ redirectTo: '/' })}
-                                    className="w-full text-left p-2 text-red-500 hover:bg-red-100 rounded-lg transition-all duration-200 font-paragraph"
-                                >
-                                    Sign Out
-                                </button>
-                            </div>
-                        </div>
-                    )}
+  return (
+    <nav className="w-full bg-white shadow-sm shadow-black/15">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between p-4">
+        <div className="font-paragraph text-lg font-semibold">
+          Placeholder for model selection
+        </div>
+
+        <div className="relative">
+          <img
+            src={session.user.image as string}
+            alt="User Image"
+            onClick={toggleDropdown}
+            className="h-10 w-10 cursor-pointer rounded-full bg-slate-200 p-1 transition-colors duration-150 hover:bg-slate-300"
+          />
+
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-64 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg z-50">
+              <div className="space-y-3 p-4">
+                <div className="space-y-1">
+                  <p className="font-paragraph text-xs text-slate-500">
+                    User signed in:
+                  </p>
+                  <p className="font-paragraph text-sm text-slate-900">
+                    {session.user.name}
+                  </p>
                 </div>
+
+                <button
+                  onClick={() => signOut({ redirectTo: '/' })}
+                  className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-sm font-paragraph text-red-600 transition-colors duration-200 hover:bg-red-100"
+                >
+                  Sign Out
+                </button>
+              </div>
             </div>
-        </nav>
-    )
+          )}
+        </div>
+      </div>
+    </nav>
+  )
 }
