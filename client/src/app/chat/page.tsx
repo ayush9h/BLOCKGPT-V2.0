@@ -60,7 +60,7 @@ export default function Chat() {
                     <Navbar selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-white ">
+                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
                     {messages.map((msg, idx) => (
                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                             <div className={`max-w-lg rounded-xl px-5 py-3 shadow text-sm leading-relaxed ${msg.role === 'user' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-900'
