@@ -35,7 +35,7 @@ export default function Chat() {
         <div className="grid grid-cols-1 md:grid-cols-[18rem_1fr] min-h-screen bg-slate-50 text-slate-800 font-paragraph">
             <aside className="bg-slate-100 border-r border-slate-300 px-4 py-6 flex flex-col shadow-inner">
                 <div className="mb-10 flex items-center gap-2">
-                    <img src="https://github.com/ayush9h/BLOCKGPT-V2.0/blob/c797547cf2a364fdad4fc1f7df901b42b2c669ed/client/public/logo.png" alt="Logo" className="h-8 w-8 object-contain" />
+                    <img src="./logo.png" alt="Logo" className="h-8 w-8 object-contain" />
                     <span className="font-medium text-md text-slate-700">BLOCKGPT</span>
                 </div>
 
