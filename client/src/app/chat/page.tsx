@@ -103,7 +103,6 @@ export default function Chat() {
                     ))}
                 </div>
 
-                {/* Input */}
                 <div className="bg-white px-6 py-4 mx-auto max-w-3xl w-full flex flex-col text-center">
                     <div className="flex items-center rounded-xl border border-slate-300 bg-slate-50 p-3 shadow-xl">
                         <input
