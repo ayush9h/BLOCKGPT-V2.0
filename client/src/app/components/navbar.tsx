@@ -10,7 +10,7 @@ type NavbarProps = {
 };
 
 
-export default function Navbar({selectedModel, setSelectedModel}:NavbarProps) {
+export default function Navbar({ selectedModel, setSelectedModel }: NavbarProps) {
   const { data: session } = useSession()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -22,18 +22,21 @@ export default function Navbar({selectedModel, setSelectedModel}:NavbarProps) {
 
   return (
     <nav className="w-full bg-white">
-      <div className="mx-auto flex max-w-screen-xl items-center justify-between p-4">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between p-6">
 
         {/* User Model Selection */}
-        <select
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="llama3-8b-8192">LLaMA3-8B</option>
-          <option value="qwen/qwen3-32b">Qwen3-32B</option>
-          <option value="gemma2-9b-it">Gemma2-9B</option>
-        </select>
+        <div className="relative w-44">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="w-full appearance-none bg-transparent text-slate-800 text-sm border border-slate-300 rounded-lg pl-3 pr-8 py-2 cursor-pointer"
+          >
+            <option value="llama3-8b-8192">Llama3-8B</option>
+            <option value="qwen/qwen3-32b">Qwen3-32B</option>
+            <option value="gemma2-9b-it">Gemma2-9B</option>
+          </select>
+        </div>
+
 
         {/* User data */}
         <div className="relative">
