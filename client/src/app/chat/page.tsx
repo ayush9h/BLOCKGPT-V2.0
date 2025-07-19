@@ -33,10 +33,10 @@ export default function Chat() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-[18rem_1fr] min-h-screen bg-slate-50 text-slate-800 font-paragraph">
-            <aside className="bg-slate-200 border-r border-slate-300 px-4 py-6 flex flex-col shadow-inner">
+            <aside className="bg-slate-100 border-r border-slate-300 px-4 py-6 flex flex-col shadow-inner">
                 <div className="mb-10 flex items-center gap-2">
                     <img src="./logo.png" alt="Logo" className="h-8 w-8 object-contain" />
-                    <span className="font-medium text-lg text-slate-700">BLOCKGPT</span>
+                    <span className="font-medium text-md text-slate-700">BLOCKGPT</span>
                 </div>
 
                 <button className="mb-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white font-semibold hover:bg-blue-600 transition">
@@ -60,10 +60,10 @@ export default function Chat() {
                     <Navbar selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gradient-to-b from-white to-slate-100">
+                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-white ">
                     {messages.map((msg, idx) => (
                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-lg rounded-xl px-5 py-3 shadow text-sm leading-relaxed ${msg.role === 'user' ? 'bg-blue-700 text-white' : 'bg-slate-300 text-slate-900'
+                            <div className={`max-w-lg rounded-xl px-5 py-3 shadow text-sm leading-relaxed ${msg.role === 'user' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-900'
                                 }`}>
                                 {msg.text}
                             </div>
@@ -71,7 +71,7 @@ export default function Chat() {
                     ))}
                 </div>
 
-                <div className="border-t border-slate-300 bg-white px-6 py-4 shadow-inner">
+                <div className="bg-white px-6 py-4">
                     <div className="mx-auto w-full max-w-3xl">
                         <div className="flex items-center gap-2 rounded-2xl border border-slate-300 bg-slate-50 px-2 py-1">
                             <input
