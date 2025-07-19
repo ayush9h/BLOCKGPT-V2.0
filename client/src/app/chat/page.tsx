@@ -10,18 +10,18 @@ export default function Chat() {
     ]);
 
     const handleSend = async () => {
-        const trimmed = input.trim();
-        if (!trimmed) return;
+        const inputData = input.trim();
+        if (!inputData) return;
 
-        setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
+        setMessages(prev => [...prev, { role: 'user', text: inputData }]);
         setInput('');
 
         try {
-            const data = await sendChatMessage(trimmed);
-            console.log(data)
+            const data = await sendChatMessage(inputData);
+
             setMessages(prev => [...prev, { role: 'assistant', text: data.service_output || "..." }]);
         } catch (err) {
-            setMessages(prev => [...prev, { role: 'assistant', text: "⚠️ Error getting the response." }]);
+            setMessages(prev => [...prev, { role: 'assistant', text: "Error getting the response." }]);
         }
     };
 
@@ -45,7 +45,7 @@ export default function Chat() {
                             {session}
                         </li>
                     ))}
-                    <button className="w-full rounded-lg px-4 py-2.5 border-2 border-blue-500 bg-blue-50 text-blue-700 font-semibold hover:bg-blue-100 hover:border-blue-600 transition">
+                    <button className="w-full rounded-lg px-4 py-2.5 border-2 border-blue-500 bg-blue-50 text-blue-700 font-semibold hover:bg-blue-100 hover:border-blue-600 transition cursor-pointer">
                         + New Chat
                     </button>
                 </ul>
