@@ -32,13 +32,6 @@ class ChatModule(APIStrategy):
 
     def response_generator(self) -> str:
 
-        try:
-            self.connect_db()
-            logger.info("Sucessful connection to MongoDB")
-
-        except Exception as err:
-            logger.info(f"Error occurred due to {err}")
-
         llm = self.MODEL_MAP[self.payload.model]
         logger.info(f"{self.payload.model} inferencing successful")
 
@@ -79,6 +72,24 @@ class ChatModule(APIStrategy):
         logger.info("Payload Validated")
 
         response = self.response_generator()
+
+        self.client = self.connect_db()
+        db = self.client["blockgpt"]
+        collection = db["session_data"]
+
+        collection.update_one(
+            {"user_id": 123, "session_id": 423},
+            {
+                "$push": {
+                    "messages": {
+                        "question": self.payload.question,
+                        "response": response,
+                    }
+                }
+            },
+            upsert=True,
+        )
+        logger.info("Documents inserted in the document successfully.")
 
         self.on_finish()
 
