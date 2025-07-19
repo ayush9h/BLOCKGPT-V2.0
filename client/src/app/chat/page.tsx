@@ -4,7 +4,10 @@ import Navbar from "../components/navbar";
 import { sendChatMessage } from "../lib/api/chatService";
 
 export default function Chat() {
+    
     const [input, setInput] = useState('');
+    const [selectedModel, setSelectedModel] = useState('llama3-8b-8192')
+
     const [messages, setMessages] = useState([
         { role: 'assistant', text: "Hello! How can I help you today?" }
     ]);
@@ -17,7 +20,7 @@ export default function Chat() {
         setInput('');
 
         try {
-            const data = await sendChatMessage(inputData);
+            const data = await sendChatMessage(selectedModel,inputData);
 
             setMessages(prev => [...prev, { role: 'assistant', text: data.service_output || "..." }]);
         } catch (err) {
@@ -53,7 +56,7 @@ export default function Chat() {
 
             <main className="col-span-4 flex flex-col h-screen">
                 <div className="border-b border-slate-200 bg-white px-6 shadow-sm">
-                    <Navbar />
+                    <Navbar selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gradient-to-b from-white to-slate-100">

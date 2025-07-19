@@ -1,9 +1,9 @@
-export async function sendChatMessage(question: string){
+export async function sendChatMessage(selectedModel:string, question: string){
     const response = await fetch('http://localhost:5000/api/v1/blockgpt/chat', {
         method: "POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({
-            model:"llama3-8b-8192",
+            model:selectedModel,
             question
         })
     })  
