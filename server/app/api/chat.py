@@ -29,8 +29,8 @@ def default_chat():
         )
 
 
-@chat_bp.get("/fetch")
-def fetch_session_data():
+@chat_bp.get("/user-session-data")
+def user_session_data():
 
     payload = request.args.to_dict()
     try:
