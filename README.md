@@ -3,6 +3,8 @@
 
 Assistant for BlockChain Domain. Internship project during May-2023 to Aug-2023.
 
+![BLOCKGPT Demo](https://github.com/ayush9h/BLOCKGPT-V2.0/blob/main/client/public/demo.jpg)
+
 How to use BLOCKGPT on your local systems.
 
 **Step 1:** Install Necessary Packages
