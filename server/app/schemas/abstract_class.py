@@ -2,6 +2,9 @@ import time
 from abc import ABC, abstractmethod
 from typing import Any, Literal, Optional
 
+from app.config.environment import Config
+from pymongo import MongoClient
+
 
 class APIStrategy(ABC):
     def on_start(self):
@@ -29,6 +32,9 @@ class APIStrategy(ABC):
             "message": message,
             "execution_time": f"{self.get_execution_time()}s",
         }
+
+    def connect_db(self):
+        return MongoClient(Config.MONGO_URI)
 
     @abstractmethod
     def validate_payload():

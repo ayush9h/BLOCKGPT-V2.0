@@ -31,6 +31,14 @@ class ChatModule(APIStrategy):
             )
 
     def response_generator(self) -> str:
+
+        try:
+            self.connect_db()
+            logger.info("Sucessful connection to MongoDB")
+
+        except Exception as err:
+            logger.info(f"Error occurred due to {err}")
+
         llm = self.MODEL_MAP[self.payload.model]
         logger.info(f"{self.payload.model} inferencing successful")
 

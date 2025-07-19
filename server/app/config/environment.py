@@ -11,3 +11,4 @@ class Config:
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     BLOCKGPT_URL_PREFIX = os.getenv("BLOCKGPT_URL_PREFIX")
     PORT = os.getenv("PORT")
+    MONGO_URI = os.getenv("MONGO_URI")
