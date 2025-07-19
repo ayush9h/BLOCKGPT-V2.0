@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LogOut } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -64,9 +64,10 @@ export default function Navbar({ selectedModel, setSelectedModel }: NavbarProps)
 
                 <button
                   onClick={() => signOut({ redirectTo: '/' })}
-                  className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-sm font-paragraph text-red-600 transition-colors duration-200 hover:bg-red-100"
+                  className="flex items-center w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-sm font-paragraph text-red-600 transition-colors duration-200 hover:bg-red-100"
                 >
                   Sign Out
+                  <LogOut className='h-4 w-4 ml-2'/>
                 </button>
               </div>
             </div>

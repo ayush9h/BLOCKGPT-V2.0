@@ -39,7 +39,7 @@ export default function Chat() {
                     <span className="font-medium text-md text-slate-700">BLOCKGPT</span>
                 </div>
 
-                <button className="mb-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white font-semibold hover:bg-blue-600 transition cursort-pointer">
+                <button className="mb-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white font-semibold hover:bg-blue-600 transition cursor-pointer">
                     + New Chat
                 </button>
 
@@ -71,25 +71,24 @@ export default function Chat() {
                     ))}
                 </div>
 
-                <div className="bg-white px-6 py-4">
-                    <div className="mx-auto w-full max-w-3xl">
-                        <div className="flex items-center gap-2 rounded-2xl border border-slate-300 bg-slate-50 px-2 py-1">
-                            <input
-                                type="text"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                placeholder="Ask about cryptocurrency"
-                                className="flex-1 bg-transparent px-3 py-2 text-sm text-slate-800 focus:outline-none placeholder-slate-500"
-                            />
-                            <button
-                                onClick={handleSend}
-                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition-colors cursor-pointer"
-                            >
-                                <ArrowUp className="h-5 w-5 text-white" />
-                            </button>
-                        </div>
+                <div className="bg-white px-6 py-4 mx-auto w-full max-w-3xl flex flex-col text-center">
+                    <div className="flex items-center rounded-xl border border-slate-300 bg-slate-50 p-3 shadow-xl">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Ask about cryptocurrency"
+                            className="flex-1 bg-transparent px-3 py-2 text-sm text-slate-800 focus:outline-none placeholder-slate-500"
+                        />
+                        <button
+                            onClick={handleSend}
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition-colors cursor-pointer"
+                        >
+                            <ArrowUp className="h-4 w-4 text-white" />
+                        </button>
                     </div>
+                    <p className="text-xs mt-2 text-slate-500 font-paragraph">BLOCKGPT can make mistakes. Check for important info.</p>
                 </div>
 
 
