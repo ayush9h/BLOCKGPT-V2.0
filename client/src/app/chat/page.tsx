@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import { sendChatMessage } from "../lib/api/chatService";
 import { userData } from "../lib/api/userData";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Plus } from "lucide-react";
 
 export default function Chat() {
     const [input, setInput] = useState('');
@@ -20,24 +20,32 @@ export default function Chat() {
 
     useEffect(
         () => {
+            let unsubscribed = false
             async function fetchData() {
                 const data = await userData(USER_ID, SESSION_ID)
-              
-                setSessions((prev) => {
-                    const sessionLabel = `Session #${SESSION_ID}`
-                    return prev.includes(sessionLabel) ? prev : [...prev,sessionLabel]
-                })
 
-                const formattedResponse = data.messages.map((msg:any)=>[
-                    {role:'user', text: msg.question},
-                    {role:'assistant', text:msg.response},
-                ]).flat()
-                
-                setMessages(formattedResponse)
+                if (!unsubscribed) {
+                    setSessions((prev) => {
+                        const sessionLabel = `Session #${SESSION_ID}`
+                        return prev.includes(sessionLabel) ? prev : [...prev, sessionLabel]
+                    })
+
+                    const formattedResponse = data.messages.map((msg: any) => [
+                        { role: 'user', text: msg.question },
+                        { role: 'assistant', text: msg.response },
+                    ]).flat()
+
+                    setMessages(formattedResponse)
+                }
             }
 
             fetchData()
-        }, [])
+
+            return () => {
+                unsubscribed = true
+            }
+
+        }, [USER_ID, SESSION_ID])
 
     const handleSend = async () => {
         const trimmed = input.trim();
@@ -73,8 +81,8 @@ export default function Chat() {
                     <span className="font-medium text-md text-slate-700">BLOCKGPT</span>
                 </div>
 
-                <button className="mb-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white font-semibold hover:bg-blue-600 transition cursor-pointer">
-                    + New Chat
+                <button className="flex items-center mb-4 w-fit rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 transition cursor-pointer">
+                    <Plus className="h-4 w-4 mr-1" /> New Chat
                 </button>
 
                 <h1 className="text-md font-semibold text-slate-700 mb-2">Chats</h1>
