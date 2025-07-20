@@ -1,10 +1,9 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import Navbar from "../components/navbar";
 import { sendChatMessage } from "../lib/api/chatService";
 import { userData } from "../lib/api/userData";
 import { ChatReducer, InitialState, Message } from "../reducers/reducerChat";
-import { useReducer } from "react";
 import { ArrowUp, Plus } from "lucide-react";
 
 export default function Chat() {
