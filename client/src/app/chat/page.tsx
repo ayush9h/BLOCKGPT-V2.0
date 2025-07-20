@@ -1,68 +1,57 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../components/navbar";
 import { sendChatMessage } from "../lib/api/chatService";
 import { userData } from "../lib/api/userData";
+import { ChatReducer, InitialState, Message } from "../reducers/reducerChat";
+import { useReducer } from "react";
 import { ArrowUp, Plus } from "lucide-react";
 
 export default function Chat() {
-    const [input, setInput] = useState('');
-    const [selectedModel, setSelectedModel] = useState('llama3-8b-8192');
 
-
-    const [sessions, setSessions] = useState<string[]>([])
-    const [messages, setMessages] = useState([
-        { role: 'assistant', text: "Hello! How can I help you today?" }
-    ]);
+    const [state, dispatch] = useReducer(ChatReducer, InitialState)
 
     const USER_ID = "123"
     const SESSION_ID = "423"
 
-    useEffect(
-        () => {
-            let unsubscribed = false
-            async function fetchData() {
-                const data = await userData(USER_ID, SESSION_ID)
+    useEffect(() => {
+        let unsubscribed = false
+        async function fetchData() {
+            const data = await userData(USER_ID, SESSION_ID)
 
-                if (!unsubscribed) {
-                    setSessions((prev) => {
-                        const sessionLabel = `Session #${SESSION_ID}`
-                        return prev.includes(sessionLabel) ? prev : [...prev, sessionLabel]
-                    })
+            if (!unsubscribed) {
+                const sessionLabel = `Session #${SESSION_ID}`
+                dispatch({ 'type': 'ADD_SESSION', payload: sessionLabel })
 
-                    const formattedResponse = data.messages.map((msg: any) => [
-                        { role: 'user', text: msg.question },
-                        { role: 'assistant', text: msg.response },
-                    ]).flat()
+                const formattedResponse: Message[] = data.messages.map((msg: any) => [
+                    { role: 'user', text: msg.question },
+                    { role: 'assistant', text: msg.response },
+                ]).flat()
 
-                    setMessages(formattedResponse)
-                }
+                dispatch({ type: 'SET_MESSAGES', payload: formattedResponse })
             }
+        }
 
-            fetchData()
+        fetchData()
 
-            return () => {
-                unsubscribed = true
-            }
+        return () => {
+            unsubscribed = true
+        }
 
-        }, [USER_ID, SESSION_ID])
+    }, [USER_ID, SESSION_ID])
 
     const handleSend = async () => {
-        const trimmed = input.trim();
-        if (!trimmed) return;
-        setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
-        setInput('');
+        const inputData = state.input.trim();
+        if (!inputData) return;
+
+        dispatch({ type: 'ADD_MESSAGE', payload: { role: 'user', text: inputData } })
+        dispatch({type:'CLEAR_INPUT', payload:''})
+
         try {
-            const data = await sendChatMessage(selectedModel, trimmed);
-            setMessages(prev => [
-                ...prev,
-                { role: 'assistant', text: data.service_output || "..." }
-            ]);
+            const data = await sendChatMessage(state.selectedModel, inputData);
+            dispatch({ type: 'ADD_MESSAGE', payload: { role: 'assistant', text: data.service_output || "..." } })
         } catch {
-            setMessages(prev => [
-                ...prev,
-                { role: 'assistant', text: "Error getting the response." }
-            ]);
+            dispatch({ type: 'ADD_MESSAGE', payload: { role: 'assistant', text: "Error getting the response from API" } })
         }
     };
 
@@ -87,7 +76,7 @@ export default function Chat() {
 
                 <h1 className="text-md font-semibold text-slate-700 mb-2">Chats</h1>
                 <ul className="space-y-2 text-sm flex-1 overflow-y-auto">
-                    {sessions.map((session, idx) => (
+                    {state.sessions.map((session, idx) => (
                         <li key={idx} className="rounded-md p-2 hover:bg-slate-300 cursor-pointer transition">
                             {session}
                         </li>
@@ -98,11 +87,11 @@ export default function Chat() {
 
             <main className="flex flex-col h-screen">
                 <div className="border-b border-slate-300 bg-white shadow-sm">
-                    <Navbar selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
+                    <Navbar selectedModel={state.selectedModel} setSelectedModel={(model) => dispatch({ type: 'SET_MODEL', payload: model })} />
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
-                    {messages.map((msg, idx) => (
+                    {state.messages.map((msg: Message, idx: number) => (
                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                             <div className={`max-w-lg rounded-md px-5 py-3 shadow text-sm leading-relaxed ${msg.role === 'user' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-900'}`}>
                                 {msg.text}
@@ -115,8 +104,8 @@ export default function Chat() {
                     <div className="flex items-center rounded-xl border border-slate-300 bg-slate-50 p-3 shadow-xl">
                         <input
                             type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
+                            value={state.input}
+                            onChange={(e) => dispatch({ type: 'SET_INPUT', payload: e.target.value })}
                             onKeyDown={handleKeyDown}
                             placeholder="Ask about cryptocurrency"
                             className="flex-1 bg-transparent px-3 py-2 text-sm text-slate-800 focus:outline-none placeholder-slate-500"
